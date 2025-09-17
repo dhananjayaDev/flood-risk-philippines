@@ -1,0 +1,139 @@
+/* Desktop CSS for Navbar - Ensures desktop styles are preserved */
+
+/* Desktop breakpoint - 769px and above */
+@media screen and (min-width: 769px) {
+    
+    /* Ensure desktop navbar positioning */
+    .top-bar {
+        position: fixed !important;
+        top: 0 !important;
+        left: 8px !important;
+        right: 8px !important;
+        height: 70px !important;
+        background: transparent !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        padding: 0 30px !important;
+        z-index: 1000 !important;
+    }
+    
+    /* Desktop logo styling */
+    .navbar-logo {
+        height: 32px !important;
+        width: auto !important;
+        object-fit: contain !important;
+        filter: brightness(0) invert(1) !important;
+    }
+    
+    .brand-name {
+        font-family: 'Brushstrike', cursive !important;
+        font-size: 1.2rem !important;
+        font-weight: normal !important;
+        color: white !important;
+        line-height: 1.1 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 7px !important;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3) !important;
+        width: 100% !important;
+        display: block !important;
+    }
+    
+    .brand-subtitle {
+        font-size: 0.7rem !important;
+        color: rgba(255, 255, 255, 0.8) !important;
+        line-height: 1.2 !important;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.3) !important;
+        margin-top: 2px !important;
+    }
+    
+    /* Desktop navigation icons */
+    .top-center {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+    
+    .nav-icons {
+        display: flex !important;
+        align-items: center !important;
+        gap: 20px !important;
+    }
+    
+    .nav-icon {
+        width: 18px !important;
+        height: 18px !important;
+        color: white !important;
+        cursor: pointer !important;
+        transition: all 0.3s ease !important;
+    }
+    
+    .nav-icon:hover {
+        color: rgba(255, 255, 255, 0.8) !important;
+        transform: scale(1.1) !important;
+    }
+    
+    /* Desktop user profile */
+    .top-right {
+        display: flex !important;
+        align-items: center !important;
+        gap: 20px !important;
+    }
+    
+    .datetime {
+        color: white !important;
+        font-size: 0.9rem !important;
+        font-weight: 500 !important;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.3) !important;
+    }
+    
+    .user-profile {
+        display: flex !important;
+        align-items: center !important;
+        gap: 10px !important;
+        cursor: pointer !important;
+        position: relative !important;
+    }
+    
+    .profile-img {
+        width: 40px !important;
+        height: 40px !important;
+        border-radius: 50% !important;
+        object-fit: cover !important;
+        border: 2px solid rgba(255, 255, 255, 0.3) !important;
+        transition: all 0.3s ease !important;
+    }
+    
+    .profile-img:hover {
+        border-color: rgba(255, 255, 255, 0.6) !important;
+        transform: scale(1.05) !important;
+    }
+    
+    .user-info {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+    }
+    
+    .username {
+        color: white !important;
+        font-size: 0.9rem !important;
+        font-weight: 600 !important;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.3) !important;
+        margin: 0 !important;
+    }
+    
+    .user-role {
+        color: rgba(255, 255, 255, 0.7) !important;
+        font-size: 0.8rem !important;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.3) !important;
+        margin: 0 !important;
+    }
+    
+    /* Hide mobile elements on desktop */
+    .mobile-menu-toggle,
+    .mobile-menu,
+    .mobile-menu-overlay {
+        display: none !important;
+    }
+}

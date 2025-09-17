@@ -1,0 +1,174 @@
+/* Mobile Responsive CSS for Weather Panels */
+
+/* Mobile breakpoint - 768px and below */
+@media screen and (max-width: 768px) {
+    
+    /* Override existing mobile styles */
+    .right-panels {
+        position: relative !important;
+        width: 100% !important;
+        right: 0 !important;
+        top: 0 !important;
+        padding: 0.75rem !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0.75rem !important;
+        margin-top: -30rem !important;
+        overflow-x: visible !important;
+        max-width: none !important;
+        z-index: 10 !important;
+    }
+    
+    /* Glass panel base styling for mobile - Weather panels only */
+    .wind-panel.glass-panel,
+    .sunrise-panel.glass-panel {
+        background: rgba(0, 0, 0, 0.3) !important;
+        backdrop-filter: blur(20px) !important;
+        -webkit-backdrop-filter: blur(20px) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        border-radius: 15px !important;
+        padding: 1rem !important;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+        min-width: auto !important;
+        flex-shrink: 1 !important;
+        width: 100% !important;
+    }
+    
+    /* Wind panel mobile styling */
+    .wind-panel {
+        width: 100% !important;
+        margin: 0 !important;
+    }
+    
+    .wind-panel .panel-header {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        margin-bottom: 1rem !important;
+    }
+    
+    .wind-panel .header-left {
+        display: flex !important;
+        align-items: center !important;
+        gap: 0.5rem !important;
+        color: white !important;
+    }
+    
+    .wind-panel .header-left i {
+        font-size: 1.2rem !important;
+        color: #4CAF50 !important;
+    }
+    
+    .wind-panel .header-left span {
+        font-size: 1rem !important;
+        font-weight: 600 !important;
+        color: white !important;
+    }
+    
+    .wind-panel .wind-value {
+        font-size: 1.2rem !important;
+        font-weight: bold !important;
+        color: #4CAF50 !important;
+    }
+    
+    .wind-panel .wind-charts {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 1rem !important;
+    }
+    
+    .wind-panel .wind-line-chart,
+    .wind-panel .wind-bar-chart {
+        height: 120px !important;
+        width: 100% !important;
+    }
+    
+    .wind-panel canvas {
+        width: 100% !important;
+        height: 100% !important;
+    }
+    
+    /* Sunrise/Sunset panel mobile styling */
+    .sunrise-panel {
+        width: 100% !important;
+        margin: 0 !important;
+    }
+    
+    .sunrise-panel .panel-header {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        margin-bottom: 1rem !important;
+    }
+    
+    .sunrise-panel .sunrise-info,
+    .sunrise-panel .sunset-info {
+        display: flex !important;
+        align-items: center !important;
+        gap: 0.5rem !important;
+        color: white !important;
+    }
+    
+    .sunrise-panel .sunrise-info i,
+    .sunrise-panel .sunset-info i {
+        font-size: 1.2rem !important;
+        color: #FFA726 !important;
+    }
+    
+    .sunrise-panel .sunrise-info span,
+    .sunrise-panel .sunset-info span {
+        font-size: 0.9rem !important;
+        font-weight: 600 !important;
+        color: white !important;
+    }
+    
+    .sunrise-panel .sun-arc-chart {
+        height: 100px !important;
+        width: 100% !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+    
+    .sunrise-panel canvas {
+        width: 100% !important;
+        height: 100% !important;
+    }
+}
+
+/* Extra small devices (phones, 480px and down) */
+@media screen and (max-width: 480px) {
+    
+    .right-panels {
+        padding: 0.75rem !important;
+        gap: 0.75rem !important;
+    }
+    
+    .wind-panel.glass-panel,
+    .sunrise-panel.glass-panel {
+        padding: 0.75rem !important;
+        border-radius: 12px !important;
+    }
+    
+    .wind-panel .header-left span {
+        font-size: 0.9rem !important;
+    }
+    
+    .wind-panel .wind-value {
+        font-size: 1.1rem !important;
+    }
+    
+    .wind-panel .wind-line-chart,
+    .wind-panel .wind-bar-chart {
+        height: 100px !important;
+    }
+    
+    .sunrise-panel .sunrise-info span,
+    .sunrise-panel .sunset-info span {
+        font-size: 0.8rem !important;
+    }
+    
+    .sunrise-panel .sun-arc-chart {
+        height: 80px !important;
+    }
+}

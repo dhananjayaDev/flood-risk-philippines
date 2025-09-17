@@ -1,0 +1,430 @@
+/* Home Page Styles - Weather Dashboard */
+
+/* Glass Style Scrollbars for Home Page */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+    transition: background 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+/* Global Weather Dashboard Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.3) rgba(255, 255, 255, 0.1);
+}
+
+body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Inter', Roboto, sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+.weather-dashboard {
+    position: relative;
+    min-height: 100vh;
+    color: white;
+}
+
+/* Main Weather Section */
+.main-weather-section {
+    position: relative;
+    padding: 80px 0 50px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    min-height: 100vh;
+}
+
+/* Force balanced layout for high-res laptops */
+@media (min-width: 2000px) {
+    .weather-info {
+        width: 50vw !important;
+        max-width: 1000px !important;
+        margin-left: 60px !important;
+        padding: 0 60px !important;
+    }
+    
+    .right-panels {
+        width: 25vw !important;
+        max-width: 450px !important;
+        right: 60px !important;
+    }
+    
+    .top-bar {
+        padding: 0 60px !important;
+    }
+    
+    .top-left {
+        margin-left: 60px !important;
+    }
+    
+    .forecast-section {
+        left: 60px !important;
+        right: 60px !important;
+    }
+}
+
+/* JavaScript-triggered layout fixes */
+.high-res-layout .weather-info {
+    width: 50vw !important;
+    max-width: 1000px !important;
+    margin-left: 60px !important;
+    padding: 0 60px !important;
+}
+
+.high-res-layout .right-panels {
+    width: 25vw !important;
+    max-width: 450px !important;
+    right: 60px !important;
+}
+
+.high-res-layout .top-bar {
+    padding: 0 60px !important;
+}
+
+.high-res-layout .top-left {
+    margin-left: 60px !important;
+}
+
+.high-res-layout .forecast-section {
+    left: 60px !important;
+    right: 60px !important;
+}
+
+/* Specific MSI Cyborg 16 A12V layout */
+.msi-cyborg-layout .weather-info {
+    width: 45vw !important;
+    max-width: 1200px !important;
+    margin-left: 80px !important;
+    padding: 0 80px !important;
+}
+
+.msi-cyborg-layout .right-panels {
+    width: 30vw !important;
+    max-width: 500px !important;
+    right: 80px !important;
+}
+
+.msi-cyborg-layout .top-bar {
+    padding: 0 80px !important;
+}
+
+.msi-cyborg-layout .top-left {
+    margin-left: 80px !important;
+}
+
+.msi-cyborg-layout .forecast-section {
+    left: 80px !important;
+    right: 80px !important;
+}
+
+/* Responsive Design */
+@media (min-width: 2560px) {
+    .top-bar {
+        padding: 0 40px;
+    }
+    
+    .top-left {
+        margin-left: 40px;
+    }
+    
+    .weather-info {
+        margin-left: 40px;
+        padding: 0 40px;
+        max-width: 800px;
+    }
+    
+    .right-panels {
+        width: 350px;
+        right: 40px;
+    }
+    
+    .forecast-section {
+        left: 40px;
+        right: 40px;
+    }
+}
+
+@media (max-width: 2559px) and (min-width: 2000px) {
+    .top-bar {
+        padding: 0 35px;
+    }
+    
+    .top-left {
+        margin-left: 35px;
+    }
+    
+    .weather-info {
+        margin-left: 35px;
+        padding: 0 35px;
+        max-width: 700px;
+    }
+    
+    .right-panels {
+        width: 320px;
+        right: 35px;
+    }
+    
+    .forecast-section {
+        left: 35px;
+        right: 35px;
+    }
+}
+
+@media (max-width: 1999px) and (min-width: 1600px) {
+    .top-bar {
+        padding: 0 20px;
+    }
+    
+    .top-left {
+        margin-left: 0;
+    }
+    
+    .weather-info {
+        margin-left: 30px;
+        padding: 0 0;
+        max-width: 450px;
+        width: calc(100vw - 480px);
+    }
+    
+    .right-panels {
+        width: 220px;
+        right: 30px;
+        gap: 8px;
+    }
+    
+    .forecast-section {
+        margin: 0 30px;
+    }
+}
+
+/* Specific fix for MSI Cyborg 16 A12V and high-res laptops */
+@media (min-width: 2000px) and (min-aspect-ratio: 16/10) {
+    .top-bar {
+        padding: 0 60px;
+    }
+    
+    .top-left {
+        margin-left: 60px;
+    }
+    
+    .weather-info {
+        margin-left: 60px;
+        padding: 0 60px;
+        max-width: 1000px;
+        width: calc(100vw - 600px);
+    }
+    
+    .right-panels {
+        width: 450px;
+        right: 60px;
+    }
+    
+    .forecast-section {
+        left: 60px;
+        right: 60px;
+    }
+}
+
+/* Alternative fix using viewport units */
+@media (min-width: 2000px) {
+    .weather-info {
+        width: 50vw;
+        max-width: 1000px;
+    }
+    
+    .right-panels {
+        width: 25vw;
+        max-width: 450px;
+    }
+}
+
+@media (max-width: 1400px) {
+    .top-bar {
+        padding: 0 20px;
+    }
+    
+    .top-left {
+        margin-left: 0;
+    }
+    
+    .weather-info {
+        margin-left: 30px;
+        padding: 0 0;
+        width: calc(100vw - 480px);
+    }
+    
+    .right-panels {
+        width: 220px;
+        right: 30px;
+        gap: 8px;
+    }
+    
+    .forecast-section {
+        margin: 0 30px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .top-bar {
+        padding: 0 20px;
+    }
+    
+    .top-left {
+        margin-left: 0;
+    }
+    
+    .weather-info {
+        margin-left: 30px;
+        padding: 0 20px;
+    }
+    
+    .right-panels {
+        width: 250px;
+        right: 20px;
+    }
+    
+    .forecast-section {
+        left: 20px;
+        right: 20px;
+    }
+}
+
+@media (max-width: 1366px) {
+    .top-bar {
+        padding: 0 20px;
+    }
+    
+    .top-left {
+        margin-left: 0;
+    }
+    
+    .weather-info {
+        margin-left: 30px;
+        padding: 0 20px;
+        width: calc(100vw - 350px);
+        max-width: 500px;
+    }
+    
+    .right-panels {
+        width: 250px;
+        right: 20px;
+    }
+    
+    .forecast-section {
+        left: 20px;
+        right: 20px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .top-bar {
+        padding: 0 18px;
+    }
+    
+    .top-left {
+        margin-left: 18px;
+    }
+    
+    .weather-info {
+        margin-left: 30px;
+        padding: 0 18px;
+        width: calc(100vw - 300px);
+        max-width: 450px;
+    }
+    
+    .right-panels {
+        width: 240px;
+        right: 18px;
+    }
+    
+    .forecast-section {
+        left: 18px;
+        right: 18px;
+    }
+}
+
+@media (max-width: 768px) {
+    .top-bar {
+        padding: 0 15px;
+    }
+    
+    .top-left {
+        margin-left: 15px;
+    }
+    
+    .weather-info {
+        margin-left: 30px;
+        padding: 0 15px;
+    }
+    
+    .main-weather-section {
+        padding: 80px 0 30px;
+    }
+    
+    .right-panels {
+        position: relative;
+        width: 100%;
+        right: 0;
+        top: 0;
+        padding: 15px;
+        flex-direction: row;
+        overflow-x: auto;
+    }
+    
+    .glass-panel {
+        min-width: 200px;
+        flex-shrink: 0;
+    }
+    
+    .forecast-section {
+        position: relative;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .top-bar {
+        padding: 0 10px;
+    }
+    
+    .top-left {
+        margin-left: 10px;
+    }
+    
+    .weather-info {
+        margin-left: 30px;
+        padding: 0 10px;
+    }
+    
+    .main-weather-section {
+        padding: 80px 0 30px;
+    }
+    
+    .right-panels {
+        padding: 10px;
+    }
+    
+    .forecast-section {
+        margin: 10px;
+    }
+}

@@ -1,0 +1,137 @@
+/* Weather Panels Component Styles */
+
+/* Glass Style Scrollbars for Weather Panels */
+.weather-panel::-webkit-scrollbar {
+    width: 4px;
+}
+
+.weather-panel::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+}
+
+.weather-panel::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 2px;
+    transition: background 0.2s ease;
+}
+
+.weather-panel::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+/* Firefox scrollbar styling */
+.weather-panel {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.3) rgba(255, 255, 255, 0.1);
+}
+
+.right-panels {
+    position: fixed;
+    top: 100px;
+    right: 30px;
+    width: 220px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 100;
+    max-width: calc(100vw - 60%);
+}
+
+.glass-panel {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    border-radius: 12px;
+    border: none;
+    padding: 14px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    min-height: 110px;
+}
+
+.panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    margin-bottom: 10px;
+    font-size: 11px;
+    font-weight: 400;
+}
+
+.panel-header i {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.wind-value {
+    font-size: 10px;
+    font-weight: 400;
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Inter', Roboto, sans-serif;
+    text-align: right;
+}
+
+.wind-charts {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.wind-line-chart,
+.wind-bar-chart {
+    height: 45px;
+}
+
+.sunrise-panel .panel-header {
+    justify-content: space-between;
+}
+
+.sunrise-info,
+.sunset-info {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+}
+
+.sun-arc-chart {
+    height: 65px;
+    margin-top: 7px;
+}
+
+/* Responsive Design for Weather Panels */
+@media (max-width: 768px) {
+    .right-panels {
+        position: relative;
+        width: 100%;
+        right: 0;
+        top: 0;
+        padding: 15px;
+        flex-direction: row;
+        overflow-x: auto;
+    }
+    
+    .glass-panel {
+        min-width: 200px;
+        flex-shrink: 0;
+    }
+}
+
+@media (max-width: 1200px) {
+    .right-panels {
+        width: 250px;
+        right: 20px;
+    }
+}
+
+
+@media (max-width: 1024px) {
+    .right-panels {
+        width: 240px;
+        right: 18px;
+    }
+}

@@ -1,0 +1,592 @@
+<!-- Top Bar Component -->
+<div class="top-bar">
+    <div class="top-left">
+        <div class="app-logo">
+            <img src="{{ url_for('static', filename='images/flood.png') }}" alt="Flood Risk Logo" class="navbar-logo">
+            <div class="logo-text">
+                <div class="brand-name">FloodRisk</div>
+                <div class="brand-subtitle">Flood Risk Management System</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mobile Menu Toggle Button -->
+    <button class="mobile-menu-toggle" id="mobile-menu-toggle">
+        <span class="burger-line"></span>
+        <span class="burger-line"></span>
+        <span class="burger-line"></span>
+    </button>
+    
+    <div class="top-center">
+        <div class="nav-icons">
+            <!-- Home Icon -->
+            <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9,22 9,12 15,12 15,22"></polyline>
+            </svg>
+            <!-- Search Icon -->
+            <svg class="nav-icon search-icon" id="search-icon" onclick="toggleSearch()" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.35-4.35"></path>
+            </svg>
+            <!-- Map Icon -->
+            <svg class="nav-icon map-icon" id="map-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
+                <line x1="8" y1="2" x2="8" y2="18"></line>
+                <line x1="16" y1="6" x2="16" y2="22"></line>
+            </svg>
+            <!-- Bell Icon -->
+            <div class="notification-wrapper">
+                <svg class="nav-icon nav-notification-icon" id="notification-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                </svg>
+                <span class="notification-badge" id="notification-badge">3</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="top-right">
+        <div class="datetime" id="current-datetime">28 Aug | 11:52</div>
+        <div class="user-profile">
+            <img src="{{ url_for('static', filename='images/dp.jpg') }}" alt="Profile" class="profile-img">
+            <div class="user-info">
+                <div class="username">{{ current_user.username if current_user.is_authenticated else 'Bluechip' }}</div>
+                <div class="user-role">{{ 'Admin' if current_user.is_authenticated else 'Public' }}</div>
+            </div>
+            <div class="user-dropdown">
+                <i class="fas fa-chevron-down"></i>
+                <div class="dropdown-menu">
+                    {% if current_user.is_authenticated %}
+                        <a href="#" class="dropdown-item" id="settings-dropdown-item">
+                            <i class="fas fa-cog"></i>
+                            Settings
+                        </a>
+                        <a href="{{ url_for('auth.logout') }}" class="dropdown-item">
+                            <i class="fas fa-power-off"></i>
+                            Logout
+                        </a>
+                    {% else %}
+                        <a href="{{ url_for('auth.login') }}" class="dropdown-item">
+                            <i class="fas fa-sign-in-alt"></i>
+                            Login
+                        </a>
+                        <a href="{{ url_for('auth.register') }}" class="dropdown-item">
+                            <i class="fas fa-user-plus"></i>
+                            Register
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Floating Search Bar -->
+<div class="floating-search-bar" id="floating-search-bar">
+    <div class="search-container">
+        <div class="search-input-wrapper">
+            <svg class="search-input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.35-4.35"></path>
+            </svg>
+            <input type="text" class="search-input" placeholder="Search..." id="search-input">
+        </div>
+    </div>
+</div>
+
+<!-- Map Panel -->
+<div class="map-panel" id="map-panel">
+    <div class="map-container">
+        <div class="map-header">
+            <div class="map-title">
+                <svg class="map-title-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
+                    <line x1="8" y1="2" x2="8" y2="18"></line>
+                    <line x1="16" y1="6" x2="16" y2="22"></line>
+                </svg>
+                <span>Flood Risk Map</span>
+            </div>
+            <button class="map-close" id="map-close">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        <div class="map-content">
+            <div class="map-container-inner">
+                <!-- Actual Map -->
+                <iframe 
+                    class="map-iframe" 
+                    src="https://www.openstreetmap.org/export/embed.html?bbox=-74.1,40.6,-73.9,40.8&layer=mapnik&marker=40.7,-74.0"
+                    id="map-iframe">
+                </iframe>
+                
+                <!-- Map Controls Overlay -->
+                <div class="map-controls-overlay">
+                    <div class="map-controls">
+                        <button class="map-control-btn" id="current-location-btn">
+                            <i class="fas fa-location-arrow"></i>
+                            Current Location
+                        </button>
+                        <button class="map-control-btn" id="risk-layers-btn">
+                            <i class="fas fa-layer-group"></i>
+                            Risk Layers
+                        </button>
+                        <button class="map-control-btn" id="zoom-in-btn">
+                            <i class="fas fa-search-plus"></i>
+                            Zoom In
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Notifications Panel -->
+<div class="notifications-panel" id="notifications-panel">
+    <div class="notifications-container">
+        <div class="notifications-header">
+            <div class="notifications-title">
+                <svg class="notifications-title-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                </svg>
+                <span>Weather Alerts</span>
+            </div>
+            <button class="notifications-close" id="notifications-close">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        <div class="notifications-content">
+            <div class="notification-item active">
+                <div class="notification-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <div class="notification-content">
+                    <div class="notification-title">Thunderstorms</div>
+                    <div class="notification-description">
+                        Intense weather conditions, Heavy rain, strong winds, and occasional lightning expected. Sudden downpours may lead to localized flooding in some areas.
+                    </div>
+                    <div class="notification-time">2 minutes ago</div>
+                </div>
+                <div class="notification-status">
+                    <span class="status-badge critical">Critical</span>
+                </div>
+            </div>
+            
+            <div class="notification-item">
+                <div class="notification-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="notification-content">
+                    <div class="notification-title">Flood Warning</div>
+                    <div class="notification-description">
+                        River levels are rising rapidly. Evacuation may be necessary for low-lying areas near the riverbank.
+                    </div>
+                    <div class="notification-time">15 minutes ago</div>
+                </div>
+                <div class="notification-status">
+                    <span class="status-badge warning">Warning</span>
+                </div>
+            </div>
+            
+            <div class="notification-item">
+                <div class="notification-icon">
+                    <i class="fas fa-cloud-rain"></i>
+                </div>
+                <div class="notification-content">
+                    <div class="notification-title">Heavy Rain Alert</div>
+                    <div class="notification-description">
+                        Expect heavy rainfall for the next 3 hours. Avoid unnecessary travel and stay indoors if possible.
+                    </div>
+                    <div class="notification-time">1 hour ago</div>
+                </div>
+                <div class="notification-status">
+                    <span class="status-badge info">Info</span>
+                </div>
+            </div>
+            
+            <div class="notification-item">
+                <div class="notification-icon">
+                    <i class="fas fa-wind"></i>
+                </div>
+                <div class="notification-content">
+                    <div class="notification-title">High Wind Warning</div>
+                    <div class="notification-description">
+                        Wind speeds reaching 40-50 mph expected. Secure outdoor objects and avoid high-rise areas.
+                    </div>
+                    <div class="notification-time">2 hours ago</div>
+                </div>
+                <div class="notification-status">
+                    <span class="status-badge warning">Warning</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Settings Panel -->
+<div class="settings-panel" id="settings-panel">
+    <div class="settings-container">
+        <div class="settings-header">
+            <div class="settings-title">
+                <svg class="settings-title-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                </svg>
+                <span>Settings</span>
+            </div>
+            <button class="settings-close" id="settings-close">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        <div class="settings-content">
+            <div class="settings-section">
+                <h3 class="settings-section-title">
+                    <i class="fas fa-user"></i>
+                    Account Settings
+                </h3>
+                <div class="settings-item">
+                    <label class="settings-label">Username</label>
+                    <input type="text" class="settings-input" value="{{ current_user.username if current_user.is_authenticated else 'Bluechip' }}" readonly>
+                </div>
+                <div class="settings-item">
+                    <label class="settings-label">Email</label>
+                    <input type="email" class="settings-input" value="{{ current_user.email if current_user.is_authenticated else 'bluechip@public.com' }}" readonly>
+                </div>
+                <div class="settings-item">
+                    <label class="settings-label">Role</label>
+                    <input type="text" class="settings-input" value="{{ 'Admin' if current_user.is_authenticated else 'Public' }}" readonly>
+                </div>
+            </div>
+            
+            <div class="settings-section">
+                <h3 class="settings-section-title">
+                    <i class="fas fa-cog"></i>
+                    System Preferences
+                </h3>
+                <div class="settings-item">
+                    <label class="settings-label">Theme</label>
+                    <select class="settings-select">
+                        <option value="dark">Dark Theme</option>
+                        <option value="light">Light Theme</option>
+                        <option value="auto">Auto</option>
+                    </select>
+                </div>
+                <div class="settings-item">
+                    <label class="settings-label">Language</label>
+                    <select class="settings-select">
+                        <option value="en">English</option>
+                        <option value="es">Spanish</option>
+                        <option value="fr">French</option>
+                    </select>
+                </div>
+                <div class="settings-item">
+                    <label class="settings-label">Notifications</label>
+                    <div class="settings-toggle">
+                        <input type="checkbox" id="notifications-toggle" checked>
+                        <label for="notifications-toggle" class="toggle-slider"></label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="settings-section">
+                <h3 class="settings-section-title">
+                    <i class="fas fa-shield-alt"></i>
+                    Security
+                </h3>
+                <div class="settings-item">
+                    <label class="settings-label">Two-Factor Authentication</label>
+                    <div class="settings-toggle">
+                        <input type="checkbox" id="2fa-toggle">
+                        <label for="2fa-toggle" class="toggle-slider"></label>
+                    </div>
+                </div>
+                <div class="settings-item">
+                    <button class="settings-btn settings-btn-secondary">
+                        <i class="fas fa-key"></i>
+                        Change Password
+                    </button>
+                </div>
+            </div>
+            
+            <div class="settings-section">
+                <h3 class="settings-section-title">
+                    <i class="fas fa-chart-line"></i>
+                    Data & Analytics
+                </h3>
+                <div class="settings-item">
+                    <label class="settings-label">Data Refresh Rate</label>
+                    <select class="settings-select">
+                        <option value="30">30 seconds</option>
+                        <option value="60" selected>1 minute</option>
+                        <option value="300">5 minutes</option>
+                        <option value="900">15 minutes</option>
+                    </select>
+                </div>
+                <div class="settings-item">
+                    <label class="settings-label">Chart Animation</label>
+                    <div class="settings-toggle">
+                        <input type="checkbox" id="chart-animation-toggle" checked>
+                        <label for="chart-animation-toggle" class="toggle-slider"></label>
+                    </div>
+                </div>
+                <div class="settings-item">
+                    <label class="settings-label">Export Data</label>
+                    <button class="settings-btn settings-btn-secondary">
+                        <i class="fas fa-download"></i>
+                        Download Data
+                    </button>
+                </div>
+            </div>
+            
+            <div class="settings-section">
+                <h3 class="settings-section-title">
+                    <i class="fas fa-bell"></i>
+                    Alert Preferences
+                </h3>
+                <div class="settings-item">
+                    <label class="settings-label">Email Alerts</label>
+                    <div class="settings-toggle">
+                        <input type="checkbox" id="email-alerts-toggle" checked>
+                        <label for="email-alerts-toggle" class="toggle-slider"></label>
+                    </div>
+                </div>
+                <div class="settings-item">
+                    <label class="settings-label">SMS Alerts</label>
+                    <div class="settings-toggle">
+                        <input type="checkbox" id="sms-alerts-toggle">
+                        <label for="sms-alerts-toggle" class="toggle-slider"></label>
+                    </div>
+                </div>
+                <div class="settings-item">
+                    <label class="settings-label">Alert Frequency</label>
+                    <select class="settings-select">
+                        <option value="immediate">Immediate</option>
+                        <option value="hourly" selected>Hourly</option>
+                        <option value="daily">Daily</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="settings-section">
+                <h3 class="settings-section-title">
+                    <i class="fas fa-map"></i>
+                    Map Settings
+                </h3>
+                <div class="settings-item">
+                    <label class="settings-label">Default Map View</label>
+                    <select class="settings-select">
+                        <option value="satellite">Satellite</option>
+                        <option value="terrain" selected>Terrain</option>
+                        <option value="street">Street</option>
+                    </select>
+                </div>
+                <div class="settings-item">
+                    <label class="settings-label">Show Weather Overlay</label>
+                    <div class="settings-toggle">
+                        <input type="checkbox" id="weather-overlay-toggle" checked>
+                        <label for="weather-overlay-toggle" class="toggle-slider"></label>
+                    </div>
+                </div>
+                <div class="settings-item">
+                    <label class="settings-label">Auto-zoom to Location</label>
+                    <div class="settings-toggle">
+                        <input type="checkbox" id="auto-zoom-toggle" checked>
+                        <label for="auto-zoom-toggle" class="toggle-slider"></label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="settings-actions">
+                {% if current_user.is_authenticated %}
+                    <button class="settings-btn settings-btn-primary">
+                        <i class="fas fa-save"></i>
+                        Save Changes
+                    </button>
+                    <button class="settings-btn settings-btn-danger">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </button>
+                {% else %}
+                    <a href="{{ url_for('auth.login') }}" class="settings-btn settings-btn-primary">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Login to Save Settings
+                    </a>
+                    <a href="{{ url_for('auth.register') }}" class="settings-btn settings-btn-secondary">
+                        <i class="fas fa-user-plus"></i>
+                        Create Account
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Mobile Menu Overlay -->
+<div class="mobile-menu-overlay" id="mobile-menu-overlay"></div>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobile-menu">
+    <!-- Mobile Menu Header -->
+    <div class="mobile-menu-header">
+        <h3 class="mobile-menu-title">Menu</h3>
+    </div>
+    
+    <!-- Profile Section -->
+    <div class="mobile-profile-section">
+        <div class="mobile-profile-info">
+            <img src="{{ url_for('static', filename='images/dp.jpg') }}" alt="Profile" class="mobile-profile-img">
+            <div class="mobile-profile-details">
+                <div class="mobile-profile-name">{{ current_user.username if current_user.is_authenticated else 'Bluechip' }}</div>
+                <div class="mobile-profile-role">{{ 'Admin' if current_user.is_authenticated else 'Public' }}</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mobile Menu Items -->
+    <ul class="mobile-menu-items">
+        <li class="mobile-menu-item">
+            <button class="mobile-menu-link" data-submenu="profile">
+                Profile
+            </button>
+            <ul class="mobile-submenu" id="profile-submenu">
+                <li class="mobile-submenu-item">
+                    <button class="mobile-submenu-link" onclick="toggleSettings()">Settings</button>
+                </li>
+                <li class="mobile-submenu-item">
+                    <a href="{{ url_for('auth.logout') }}" class="mobile-submenu-link">Sign Out</a>
+                </li>
+            </ul>
+        </li>
+        <li class="mobile-menu-item">
+            <button class="mobile-menu-link" onclick="scrollToSection('home')">
+                Home
+            </button>
+        </li>
+        <li class="mobile-menu-item">
+            <button class="mobile-menu-link" onclick="toggleSearch()">
+                Search
+            </button>
+        </li>
+        <li class="mobile-menu-item">
+            <button class="mobile-menu-link" onclick="toggleMap()">
+                Map
+            </button>
+        </li>
+        <li class="mobile-menu-item">
+            <button class="mobile-menu-link" onclick="toggleNotifications()">
+                Notification
+            </button>
+        </li>
+    </ul>
+    
+    <!-- Mobile Menu Footer -->
+    <div class="mobile-menu-footer">
+        <p class="mobile-menu-version">FloodRisk v1.0</p>
+    </div>
+</div>
+
+<!-- Background Overlay -->
+<div class="background-overlay" id="background-overlay"></div>
+
+<script>
+// Mobile Menu Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+    const profileSubmenu = document.getElementById('profile-submenu');
+    const profileButton = document.querySelector('[data-submenu="profile"]');
+    
+    // Toggle mobile menu
+    if (mobileMenuToggle) {
+        mobileMenuToggle.addEventListener('click', function() {
+            mobileMenuToggle.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+            mobileMenuOverlay.classList.toggle('active');
+            document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+        });
+    }
+    
+    // Close mobile menu when clicking overlay
+    if (mobileMenuOverlay) {
+        mobileMenuOverlay.addEventListener('click', function() {
+            closeMobileMenu();
+        });
+    }
+    
+    // Toggle profile submenu
+    if (profileButton && profileSubmenu) {
+        profileButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            profileSubmenu.classList.toggle('active');
+        });
+    }
+    
+    // Close mobile menu function
+    function closeMobileMenu() {
+        mobileMenuToggle.classList.remove('active');
+        mobileMenu.classList.remove('active');
+        mobileMenuOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+    
+    // Close mobile menu when clicking on menu links (except submenu toggles)
+    const mobileMenuLinks = document.querySelectorAll('.mobile-menu-link:not([data-submenu])');
+    mobileMenuLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            closeMobileMenu();
+        });
+    });
+    
+    // Close mobile menu when clicking on submenu links
+    const mobileSubmenuLinks = document.querySelectorAll('.mobile-submenu-link');
+    mobileSubmenuLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            closeMobileMenu();
+        });
+    });
+    
+    // Close mobile menu on escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
+            closeMobileMenu();
+        }
+    });
+});
+
+// Panel toggle functions
+function toggleSearch() {
+    if (typeof openSearchPanel === 'function') {
+        openSearchPanel();
+    } else {
+        console.log('Search panel functionality not loaded');
+    }
+}
+
+function toggleMap() {
+    if (typeof openMapPanel === 'function') {
+        openMapPanel();
+    } else {
+        console.log('Map panel functionality not loaded');
+    }
+}
+
+function toggleNotifications() {
+    if (typeof openNotificationPanel === 'function') {
+        openNotificationPanel();
+    } else {
+        console.log('Notification panel functionality not loaded');
+    }
+}
+</script>

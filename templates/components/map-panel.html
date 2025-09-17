@@ -1,0 +1,61 @@
+<!-- Map Panel Component -->
+<div class="modal-panel" id="map-panel">
+    <div class="modal-panel-header">
+        <div class="modal-header-left">
+            <i class="fas fa-map"></i>
+            <span>Interactive Map</span>
+        </div>
+        <button class="modal-close-panel" onclick="closeMapPanel()">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    
+    <div class="map-content">
+        <div class="modal-map-container">
+            <div id="flood-map" class="modal-flood-map">
+                <!-- Map will be rendered here -->
+                <div class="modal-map-placeholder">
+                    <i class="fas fa-map-marked-alt"></i>
+                    <p>Interactive Flood Risk Map</p>
+                    <small>Click to view flood zones and risk areas</small>
+                </div>
+            </div>
+        </div>
+        
+        <div class="map-controls">
+            <div class="modal-map-legend">
+                <h4>Risk Levels</h4>
+                <div class="modal-legend-items">
+                    <div class="modal-legend-item">
+                        <span class="modal-legend-color modal-low-risk"></span>
+                        <span>Low Risk</span>
+                    </div>
+                    <div class="modal-legend-item">
+                        <span class="modal-legend-color modal-medium-risk"></span>
+                        <span>Medium Risk</span>
+                    </div>
+                    <div class="modal-legend-item">
+                        <span class="modal-legend-color modal-high-risk"></span>
+                        <span>High Risk</span>
+                    </div>
+                    <div class="modal-legend-item">
+                        <span class="modal-legend-color modal-critical-risk"></span>
+                        <span>Critical Risk</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-map-actions">
+                <button class="modal-map-btn" onclick="centerMap()">
+                    <i class="fas fa-crosshairs"></i>
+                    Center Map
+                </button>
+                <button class="modal-map-btn" onclick="toggleLayers()">
+                    <i class="fas fa-layer-group"></i>
+                    Toggle Layers
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+

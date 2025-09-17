@@ -1,0 +1,38 @@
+<!-- Right Side Panels Component -->
+<div class="right-panels">
+    <!-- Wind Status Panel -->
+    <div class="glass-panel wind-panel">
+        <div class="panel-header">
+            <div class="header-left">
+                <i class="fas fa-wind"></i>
+                <span>Wind status</span>
+            </div>
+            <div class="wind-value">{{ wind_data.wind_kph if wind_data else '--' }} km/h</div>
+        </div>
+        <div class="wind-charts">
+            <div class="wind-line-chart">
+                <canvas id="windLineChart"></canvas>
+            </div>
+            <div class="wind-bar-chart">
+                <canvas id="windBarChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sunrise/Sunset Panel -->
+    <div class="glass-panel sunrise-panel">
+        <div class="panel-header">
+            <div class="sunrise-info">
+                <i class="fas fa-sun"></i>
+                <span>Sunrise</span>
+            </div>
+            <div class="sunset-info">
+                <i class="fas fa-sun"></i>
+                <span>✓ Sunset</span>
+            </div>
+        </div>
+        <div class="sun-arc-chart">
+            <canvas id="sunArcChart"></canvas>
+        </div>
+    </div>
+</div>

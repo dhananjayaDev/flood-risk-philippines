@@ -1,0 +1,19 @@
+<!-- Weather Info Component -->
+<div class="weather-info">
+    <div class="weather-condition">
+        <h1 class="condition-title">{{ weather_data.condition if weather_data else 'Loading...' }}</h1>
+        <p class="condition-subtitle">{{ weather_data.river_name if weather_data else 'Loading...' }}</p>
+        <p class="condition-description">
+            {{ weather_data.description if weather_data else 'Loading weather data...' }}
+        </p>
+    </div>
+    <div class="temperature-display">
+        <span class="temperature">{{ weather_data.temperature_c if weather_data else '--' }}°</span>
+        <span class="temp-variation">+/-</span>
+    </div>
+    <div class="location-info">
+        <i class="fas fa-map-marker-alt"></i>
+        <span>{{ weather_data.location if weather_data else 'Loading...' }}</span>
+        <div class="uv-index">UV Ind.: {{ weather_data.uv if weather_data else '--' }}</div>
+    </div>
+</div>

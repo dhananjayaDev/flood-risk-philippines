@@ -1,0 +1,276 @@
+/* Desktop CSS for Auth Pages - Ensures desktop styles are preserved */
+
+/* Desktop breakpoint - 769px and above */
+@media screen and (min-width: 769px) {
+    
+    /* Ensure desktop layout is preserved */
+    .auth-container {
+        display: flex !important;
+        height: 100vh !important;
+        overflow: hidden !important;
+    }
+    
+    .left-panel {
+        flex: 1 !important;
+        background: rgba(255, 255, 255, 0.1) !important;
+        backdrop-filter: blur(20px) !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        align-items: center !important;
+        padding: 2rem !important;
+        position: relative !important;
+        overflow: hidden !important;
+        min-width: 0 !important;
+        margin-top: -1px !important;
+    }
+    
+    .left-panel::before {
+        content: '' !important;
+        position: absolute !important;
+        top: -1px !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        background: rgba(0, 0, 0, 0.3) !important;
+        z-index: -1 !important;
+    }
+    
+    .auth-video {
+        position: absolute !important;
+        top: -1px !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: calc(100% + 2px) !important;
+        object-fit: cover !important;
+        z-index: -2 !important;
+        filter: blur(10px) !important;
+        min-width: 100% !important;
+        min-height: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        display: block !important;
+    }
+    
+    .left-content {
+        position: relative !important;
+        z-index: 2 !important;
+        text-align: left !important;
+        color: #f0f0f0 !important;
+        max-width: 500px !important;
+        width: 100% !important;
+        padding: 0 1rem !important;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
+    }
+    
+    .app-title {
+        font-size: 3.5rem !important;
+        font-weight: 800 !important;
+        margin-bottom: 1rem !important;
+        line-height: 1.1 !important;
+    }
+    
+    .app-subtitle {
+        font-size: 1.2rem !important;
+        margin-bottom: 2rem !important;
+        opacity: 0.9 !important;
+        line-height: 1.6 !important;
+        color: #e8e8e8 !important;
+    }
+    
+    .right-panel {
+        flex: 1 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        align-items: center !important;
+        padding: 2rem !important;
+        background: white !important;
+        min-width: 0 !important;
+        overflow-y: auto !important;
+    }
+    
+    .logo-section {
+        display: flex !important;
+        align-items: center !important;
+        margin-bottom: 2rem !important;
+        width: 100% !important;
+        max-width: 400px !important;
+    }
+    
+    .auth-logo {
+        height: 70px !important;
+        width: auto !important;
+        object-fit: contain !important;
+        margin-right: 1rem !important;
+    }
+    
+    .logo-brand {
+        flex: 1 !important;
+    }
+    
+    .logo-text {
+        font-family: 'Brushstrike', sans-serif !important;
+        font-size: 1.8rem !important;
+        font-weight: bold !important;
+        color: #333 !important;
+        margin: 0 !important;
+        line-height: 1 !important;
+    }
+    
+    .logo-subtitle {
+        font-size: 0.9rem !important;
+        color: #666 !important;
+        margin: 0.25rem 0 0 0 !important;
+        line-height: 1.2 !important;
+    }
+    
+    .welcome-title {
+        font-size: 2.5rem !important;
+        font-weight: bold !important;
+        color: #333 !important;
+        margin-bottom: 1rem !important;
+        text-align: center !important;
+        width: 100% !important;
+        max-width: 400px !important;
+    }
+    
+    .signup-prompt,
+    .signin-prompt {
+        text-align: center !important;
+        margin-bottom: 2rem !important;
+        width: 100% !important;
+        max-width: 400px !important;
+    }
+    
+    .signup-prompt p,
+    .signin-prompt p {
+        color: #666 !important;
+        font-size: 1rem !important;
+        margin: 0 !important;
+        line-height: 1.5 !important;
+    }
+    
+    .signup-link,
+    .signin-link {
+        color: #4CAF50 !important;
+        text-decoration: none !important;
+        font-weight: 600 !important;
+    }
+    
+    .signup-link:hover,
+    .signin-link:hover {
+        color: #45a049 !important;
+        text-decoration: underline !important;
+    }
+    
+    .form-group {
+        margin-bottom: 1.5rem !important;
+        width: 100% !important;
+        max-width: 400px !important;
+    }
+    
+    .form-control {
+        border: none !important;
+        border-bottom: 2px solid #e9ecef !important;
+        border-radius: 0 !important;
+        padding: 8px 0 !important;
+        font-size: 0.9rem !important;
+        transition: border-color 0.3s ease !important;
+        background: transparent !important;
+        width: 100% !important;
+    }
+    
+    .form-control:focus {
+        border-bottom-color: #333 !important;
+        box-shadow: none !important;
+        outline: none !important;
+    }
+    
+    .btn-primary {
+        background: #333 !important;
+        border: none !important;
+        border-radius: 6px !important;
+        padding: 10px 20px !important;
+        font-size: 0.9rem !important;
+        font-weight: 600 !important;
+        width: 100% !important;
+        max-width: 400px !important;
+        transition: background-color 0.3s ease !important;
+        color: white !important;
+    }
+    
+    .btn-primary:hover {
+        background: #555 !important;
+    }
+    
+    .btn-outline {
+        border: 2px solid #333 !important;
+        color: #333 !important;
+        background: transparent !important;
+        border-radius: 6px !important;
+        padding: 10px 20px !important;
+        font-size: 0.9rem !important;
+        font-weight: 600 !important;
+        width: 100% !important;
+        max-width: 400px !important;
+        margin-top: 1rem !important;
+        transition: all 0.3s ease !important;
+    }
+    
+    .btn-outline:hover {
+        background: #333 !important;
+        color: white !important;
+    }
+    
+    .forgot-password {
+        text-align: center !important;
+        margin-top: 1rem !important;
+        width: 100% !important;
+        max-width: 400px !important;
+    }
+    
+    .forgot-link {
+        color: #666 !important;
+        text-decoration: none !important;
+        font-size: 0.9rem !important;
+    }
+    
+    .forgot-link:hover {
+        color: #333 !important;
+        text-decoration: underline !important;
+    }
+    
+    .bold-text {
+        font-weight: 600 !important;
+    }
+    
+    .public-dashboard-link {
+        text-align: center !important;
+        margin-top: 1rem !important;
+        width: 100% !important;
+        max-width: 400px !important;
+    }
+    
+    .public-dashboard-link .forgot-link {
+        font-size: 0.9rem !important;
+    }
+    
+    .error-message {
+        color: #dc3545 !important;
+        font-size: 0.8rem !important;
+        margin-top: 0.25rem !important;
+    }
+    
+    .auth-footer {
+        position: absolute !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 3px !important;
+        background: linear-gradient(90deg, #4CAF50, #66BB6A) !important;
+        z-index: 4 !important;
+    }
+}

@@ -1,0 +1,98 @@
+/* Weather Info Component Styles */
+
+.weather-info {
+    text-align: left;
+    max-width: 450px;
+    padding: 0 0;
+    margin-top: 20px;
+    margin-left: 30px;
+    width: calc(100vw - 480px);
+    min-width: 250px;
+}
+
+.condition-title {
+    font-size: 2.8rem;
+    font-weight: 400;
+    margin-bottom: 8px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.condition-subtitle {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 15px;
+    font-weight: 400;
+}
+
+.condition-description {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.4;
+    margin-bottom: 25px;
+    max-width: 400px;
+}
+
+.temperature-display {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    margin-bottom: 0px;
+}
+
+.temperature {
+    font-size: 3.2rem;
+    font-weight: 300;
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Inter', Roboto, sans-serif;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.temp-variation {
+    font-size: 1rem;
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Inter', Roboto, sans-serif;
+    color: rgba(255, 255, 255, 0.6);
+    margin-top: 15px;
+}
+
+.location-info {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    font-size: 0.9rem;
+}
+
+.location-info i {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.uv-index {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Inter', Roboto, sans-serif;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Responsive Design for Weather Info */
+@media (max-width: 768px) {
+    .weather-info {
+        margin-left: 15px;
+        padding: 0 15px;
+        width: calc(100vw - 30px);
+        max-width: none;
+    }
+    
+    .condition-title {
+        font-size: 2.5rem;
+    }
+    
+    .temperature {
+        font-size: 4rem;
+    }
+    
+    .condition-description {
+        max-width: none;
+    }
+}

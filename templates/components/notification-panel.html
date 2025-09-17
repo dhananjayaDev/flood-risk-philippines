@@ -1,0 +1,100 @@
+<!-- Notification Panel Component -->
+<div class="modal-panel" id="notification-panel">
+    <div class="modal-panel-header">
+        <div class="modal-header-left">
+            <i class="fas fa-bell"></i>
+            <span>Notifications</span>
+            <span class="modal-notification-count" id="notification-count">4</span>
+        </div>
+        <button class="modal-close-panel" onclick="closeNotificationPanel()">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    
+    <div class="notification-content">
+        <div class="modal-notification-filters">
+            <button class="modal-filter-btn active" onclick="filterNotifications('all')">All</button>
+            <button class="modal-filter-btn" onclick="filterNotifications('alerts')">Alerts</button>
+            <button class="modal-filter-btn" onclick="filterNotifications('warnings')">Warnings</button>
+            <button class="modal-filter-btn" onclick="filterNotifications('info')">Info</button>
+        </div>
+        
+        <div class="modal-notifications-list" id="notifications-list">
+            <div class="modal-notification-item alert">
+                <div class="modal-notification-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="modal-notification-content">
+                    <h4>Flood Alert - High Risk</h4>
+                    <p>Heavy rainfall expected in your area. Risk level elevated to HIGH.</p>
+                    <span class="modal-notification-time">2 minutes ago</span>
+                </div>
+                <div class="modal-notification-actions">
+                    <button class="modal-action-btn" onclick="markAsRead(this)">
+                        <i class="fas fa-check"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="modal-notification-item warning">
+                <div class="modal-notification-icon">
+                    <i class="fas fa-exclamation-circle"></i>
+                </div>
+                <div class="modal-notification-content">
+                    <h4>Weather Warning</h4>
+                    <p>Thunderstorms approaching from the west. Stay indoors.</p>
+                    <span class="modal-notification-time">15 minutes ago</span>
+                </div>
+                <div class="modal-notification-actions">
+                    <button class="modal-action-btn" onclick="markAsRead(this)">
+                        <i class="fas fa-check"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="modal-notification-item info">
+                <div class="modal-notification-icon">
+                    <i class="fas fa-info-circle"></i>
+                </div>
+                <div class="modal-notification-content">
+                    <h4>System Update</h4>
+                    <p>New flood monitoring stations added to your area.</p>
+                    <span class="modal-notification-time">1 hour ago</span>
+                </div>
+                <div class="modal-notification-actions">
+                    <button class="modal-action-btn" onclick="markAsRead(this)">
+                        <i class="fas fa-check"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="modal-notification-item info">
+                <div class="modal-notification-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="modal-notification-content">
+                    <h4>Weekly Report</h4>
+                    <p>Your weekly flood risk summary is ready.</p>
+                    <span class="modal-notification-time">2 hours ago</span>
+                </div>
+                <div class="modal-notification-actions">
+                    <button class="modal-action-btn" onclick="markAsRead(this)">
+                        <i class="fas fa-check"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="modal-notification-actions-bottom">
+            <button class="modal-action-btn-secondary" onclick="markAllAsRead()">
+                <i class="fas fa-check-double"></i>
+                Mark All as Read
+            </button>
+            <button class="modal-action-btn-secondary" onclick="clearAllNotifications()">
+                <i class="fas fa-trash"></i>
+                Clear All
+            </button>
+        </div>
+    </div>
+</div>
+

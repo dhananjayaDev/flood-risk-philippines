@@ -1,0 +1,434 @@
+<!-- Public Dashboard Top Bar Component -->
+<style>
+.public-dropdown-item:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: white !important;
+    transform: none !important;
+}
+
+.public-dropdown-item:active {
+    background: transparent !important;
+    color: white !important;
+}
+
+.public-dropdown-item:focus {
+    background: transparent !important;
+    color: white !important;
+}
+
+.public-dropdown-item {
+    background: transparent !important;
+    color: white !important;
+}
+</style>
+<div class="top-bar">
+    <div class="top-left">
+        <div class="app-logo">
+            <img src="{{ url_for('static', filename='images/flood.png') }}" alt="Flood Risk Logo" class="navbar-logo">
+            <div class="logo-text">
+                <div class="brand-name">FloodRisk</div>
+                <div class="brand-subtitle">Flood Risk Management System</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="top-center">
+        <div class="nav-icons">
+            <!-- Home Icon -->
+            <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9,22 9,12 15,12 15,22"></polyline>
+            </svg>
+            <!-- Search Icon -->
+            <svg class="nav-icon search-icon" id="search-icon" onclick="toggleSearch()" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.35-4.35"></path>
+            </svg>
+            <!-- Map Icon -->
+            <svg class="nav-icon map-icon" id="map-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
+                <line x1="8" y1="2" x2="8" y2="18"></line>
+                <line x1="16" y1="6" x2="16" y2="22"></line>
+            </svg>
+            <!-- Bell Icon -->
+            <div class="notification-wrapper">
+                <svg class="nav-icon nav-notification-icon" id="notification-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                </svg>
+                <span class="notification-badge" id="notification-badge">3</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="top-right">
+        <div class="datetime" id="current-datetime">28 Aug | 11:52</div>
+        <div class="user-profile">
+            <img src="{{ url_for('static', filename='images/dpbc.jpeg') }}" alt="Profile" class="profile-img">
+            <div class="user-info">
+                <div class="username">Bluechip</div>
+                <div class="user-role">Public</div>
+            </div>
+            <div class="user-dropdown">
+                <i class="fas fa-chevron-down"></i>
+                <div class="dropdown-menu">
+                    <a href="{{ url_for('auth.login') }}" class="dropdown-item public-dropdown-item">
+                        Login
+                    </a>
+                    <a href="{{ url_for('auth.register') }}" class="dropdown-item public-dropdown-item">
+                        Register
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mobile Menu Toggle Button -->
+    <button class="mobile-menu-toggle" id="mobile-menu-toggle">
+        <span class="burger-line"></span>
+        <span class="burger-line"></span>
+        <span class="burger-line"></span>
+    </button>
+</div>
+
+<!-- Floating Search Bar -->
+<div class="floating-search-bar" id="floating-search-bar">
+    <div class="search-container">
+        <div class="search-input-wrapper">
+            <svg class="search-input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.35-4.35"></path>
+            </svg>
+            <input type="text" class="search-input" placeholder="Search..." id="search-input">
+        </div>
+    </div>
+</div>
+
+<!-- Map Panel -->
+<div class="map-panel" id="map-panel">
+    <div class="map-container">
+        <div class="map-header">
+            <div class="map-title">
+                <svg class="map-title-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
+                    <line x1="8" y1="2" x2="8" y2="18"></line>
+                    <line x1="16" y1="6" x2="16" y2="22"></line>
+                </svg>
+                <span>Flood Risk Map</span>
+            </div>
+            <button class="map-close" id="map-close">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        <div class="map-content">
+            <div class="map-container-inner">
+                <!-- Actual Map -->
+                <iframe 
+                    class="map-iframe" 
+                    src="https://www.openstreetmap.org/export/embed.html?bbox=-74.1,40.6,-73.9,40.8&layer=mapnik&marker=40.7,-74.0"
+                    id="map-iframe">
+                </iframe>
+                
+                <!-- Map Controls Overlay -->
+                <div class="map-controls-overlay">
+                    <div class="map-controls">
+                        <button class="map-control-btn" id="current-location-btn">
+                            <i class="fas fa-location-arrow"></i>
+                            Current Location
+                        </button>
+                        <button class="map-control-btn" id="risk-layers-btn">
+                            <i class="fas fa-layer-group"></i>
+                            Risk Layers
+                        </button>
+                        <button class="map-control-btn" id="zoom-in-btn">
+                            <i class="fas fa-search-plus"></i>
+                            Zoom In
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Notifications Panel -->
+<div class="notifications-panel" id="notifications-panel">
+    <div class="notifications-container">
+        <div class="notifications-header">
+            <div class="notifications-title">
+                <svg class="notifications-title-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                </svg>
+                <span>Weather Alerts</span>
+            </div>
+            <button class="notifications-close" id="notifications-close">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        <div class="notifications-content">
+            <div class="notification-item active">
+                <div class="notification-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <div class="notification-content">
+                    <div class="notification-title">Thunderstorms</div>
+                    <div class="notification-description">
+                        Intense weather conditions, Heavy rain, strong winds, and occasional lightning expected. Sudden downpours may lead to localized flooding in some areas.
+                    </div>
+                    <div class="notification-time">2 minutes ago</div>
+                </div>
+                <div class="notification-status">
+                    <span class="status-badge critical">Critical</span>
+                </div>
+            </div>
+            
+            <div class="notification-item">
+                <div class="notification-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="notification-content">
+                    <div class="notification-title">Flood Warning</div>
+                    <div class="notification-description">
+                        River levels are rising rapidly. Evacuation may be necessary for low-lying areas near the riverbank.
+                    </div>
+                    <div class="notification-time">15 minutes ago</div>
+                </div>
+                <div class="notification-status">
+                    <span class="status-badge warning">Warning</span>
+                </div>
+            </div>
+            
+            <div class="notification-item">
+                <div class="notification-icon">
+                    <i class="fas fa-cloud-rain"></i>
+                </div>
+                <div class="notification-content">
+                    <div class="notification-title">Heavy Rain Alert</div>
+                    <div class="notification-description">
+                        Expect heavy rainfall for the next 3 hours. Avoid unnecessary travel and stay indoors if possible.
+                    </div>
+                    <div class="notification-time">1 hour ago</div>
+                </div>
+                <div class="notification-status">
+                    <span class="status-badge info">Info</span>
+                </div>
+            </div>
+            
+            <div class="notification-item">
+                <div class="notification-icon">
+                    <i class="fas fa-wind"></i>
+                </div>
+                <div class="notification-content">
+                    <div class="notification-title">High Wind Warning</div>
+                    <div class="notification-description">
+                        Wind speeds reaching 40-50 mph expected. Secure outdoor objects and avoid high-rise areas.
+                    </div>
+                    <div class="notification-time">2 hours ago</div>
+                </div>
+                <div class="notification-status">
+                    <span class="status-badge warning">Warning</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Settings Panel -->
+<div class="settings-panel" id="settings-panel">
+    <div class="settings-container">
+        <div class="settings-header">
+            <div class="settings-title">
+                <svg class="settings-title-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                </svg>
+                <span>Settings</span>
+            </div>
+            <button class="settings-close" id="settings-close">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        <div class="settings-content">
+            <div class="settings-section">
+                <h3 class="settings-section-title">
+                    <i class="fas fa-user"></i>
+                    Account Settings
+                </h3>
+                <div class="settings-item">
+                    <label class="settings-label">Username</label>
+                    <input type="text" class="settings-input" value="Bluechip" readonly>
+                </div>
+                <div class="settings-item">
+                    <label class="settings-label">Email</label>
+                    <input type="email" class="settings-input" value="bluechip@public.com" readonly>
+                </div>
+                <div class="settings-item">
+                    <label class="settings-label">Role</label>
+                    <input type="text" class="settings-input" value="Public" readonly>
+                </div>
+            </div>
+            
+            <div class="settings-actions">
+                <a href="{{ url_for('auth.login') }}" class="settings-btn settings-btn-primary">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Login to Save Settings
+                </a>
+                <a href="{{ url_for('auth.register') }}" class="settings-btn settings-btn-secondary">
+                    <i class="fas fa-user-plus"></i>
+                    Create Account
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Background Overlay -->
+<div class="background-overlay" id="background-overlay"></div>
+
+<!-- Mobile Menu Overlay -->
+<div class="mobile-menu-overlay" id="mobile-menu-overlay"></div>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobile-menu">
+    <div class="mobile-menu-header">
+        <h3 class="mobile-menu-title">Menu</h3>
+    </div>
+    
+    <!-- Profile Section -->
+    <div class="mobile-profile-section">
+        <div class="mobile-profile-info">
+            <img src="{{ url_for('static', filename='images/dpbc.jpeg') }}" alt="Profile" class="mobile-profile-img">
+            <div class="mobile-profile-details">
+                <h4 class="mobile-profile-name">Bluechip</h4>
+                <p class="mobile-profile-role">Public</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Menu Items -->
+    <ul class="mobile-menu-items">
+        <li class="mobile-menu-item">
+            <a href="{{ url_for('auth.login') }}" class="mobile-menu-link">Sign In</a>
+        </li>
+        <li class="mobile-menu-item">
+            <a href="{{ url_for('auth.register') }}" class="mobile-menu-link">Sign Up</a>
+        </li>
+        <li class="mobile-menu-item">
+            <a href="{{ url_for('main.home') }}" class="mobile-menu-link">Home</a>
+        </li>
+        <li class="mobile-menu-item">
+            <button class="mobile-menu-link" onclick="toggleSearch()">Search</button>
+        </li>
+        <li class="mobile-menu-item">
+            <button class="mobile-menu-link" onclick="toggleMap()">Map</button>
+        </li>
+        <li class="mobile-menu-item">
+            <button class="mobile-menu-link" onclick="toggleNotifications()">Notification</button>
+        </li>
+    </ul>
+    
+    <!-- Footer -->
+    <div class="mobile-menu-footer">
+        <p class="mobile-menu-version">FloodRisk v1.0</p>
+    </div>
+</div>
+
+<script>
+// Mobile menu functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+    
+    if (mobileMenuToggle && mobileMenu && mobileMenuOverlay) {
+        // Toggle mobile menu
+        mobileMenuToggle.addEventListener('click', function() {
+            mobileMenuToggle.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+            mobileMenuOverlay.classList.toggle('active');
+            
+            // Prevent body scroll when menu is open
+            if (mobileMenu.classList.contains('active')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
+        });
+        
+        // Close menu when clicking overlay
+        mobileMenuOverlay.addEventListener('click', function() {
+            closeMobileMenu();
+        });
+        
+        // Close menu when clicking menu links
+        const menuLinks = mobileMenu.querySelectorAll('.mobile-menu-link, .mobile-submenu-link');
+        menuLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                closeMobileMenu();
+            });
+        });
+        
+        // Close menu with ESC key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
+                closeMobileMenu();
+            }
+        });
+    }
+});
+
+function closeMobileMenu() {
+    const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+    
+    if (mobileMenuToggle && mobileMenu && mobileMenuOverlay) {
+        mobileMenuToggle.classList.remove('active');
+        mobileMenu.classList.remove('active');
+        mobileMenuOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+}
+
+function toggleSubmenu(submenuId) {
+    const submenu = document.getElementById(submenuId);
+    if (submenu) {
+        submenu.classList.toggle('active');
+    }
+}
+
+// Panel toggle functions
+function toggleSearch() {
+    if (typeof openSearchPanel === 'function') {
+        openSearchPanel();
+    } else {
+        console.log('Search panel functionality not loaded');
+    }
+}
+
+function toggleMap() {
+    if (typeof openMapPanel === 'function') {
+        openMapPanel();
+    } else {
+        console.log('Map panel functionality not loaded');
+    }
+}
+
+function toggleNotifications() {
+    if (typeof openNotificationPanel === 'function') {
+        openNotificationPanel();
+    } else {
+        console.log('Notification panel functionality not loaded');
+    }
+}
+</script>

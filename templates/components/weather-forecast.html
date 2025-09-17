@@ -1,0 +1,54 @@
+<!-- 7-Day Forecast Component -->
+<div class="forecast-section">
+    <div class="forecast-days">
+        {% if forecast_7day %}
+            {% for day in forecast_7day %}
+                <div class="forecast-day{% if loop.index == 4 %} active{% endif %}">
+                    <div class="day-name">{{ day.day_of_week }}</div>
+                    <div class="day-temp">{{ day.max_temp_c|round|int }}°</div>
+                    <div class="day-icon"><i class="{{ day.icon }}"></i></div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <!-- Fallback static data if API fails -->
+            <div class="forecast-day">
+                <div class="day-name">Monday</div>
+                <div class="day-temp">--°</div>
+                <div class="day-icon"><i class="fas fa-question-circle"></i></div>
+            </div>
+            <div class="forecast-day">
+                <div class="day-name">Tuesday</div>
+                <div class="day-temp">--°</div>
+                <div class="day-icon"><i class="fas fa-question-circle"></i></div>
+            </div>
+            <div class="forecast-day">
+                <div class="day-name">Wednesday</div>
+                <div class="day-temp">--°</div>
+                <div class="day-icon"><i class="fas fa-question-circle"></i></div>
+            </div>
+            <div class="forecast-day active">
+                <div class="day-name">Thursday</div>
+                <div class="day-temp">--°</div>
+                <div class="day-icon"><i class="fas fa-question-circle"></i></div>
+            </div>
+            <div class="forecast-day">
+                <div class="day-name">Friday</div>
+                <div class="day-temp">--°</div>
+                <div class="day-icon"><i class="fas fa-question-circle"></i></div>
+            </div>
+            <div class="forecast-day">
+                <div class="day-name">Saturday</div>
+                <div class="day-temp">--°</div>
+                <div class="day-icon"><i class="fas fa-question-circle"></i></div>
+            </div>
+            <div class="forecast-day">
+                <div class="day-name">Sunday</div>
+                <div class="day-temp">--°</div>
+                <div class="day-icon"><i class="fas fa-question-circle"></i></div>
+            </div>
+        {% endif %}
+    </div>
+    <div class="forecast-trend-line">
+        <canvas id="riverHeightChart" width="400" height="80"></canvas>
+    </div>
+</div>
