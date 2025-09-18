@@ -1,5 +1,1 @@
-from flask import Blueprint
-
-bp = Blueprint('weather', __name__)
-
-from app.weather import routes
+# Weather module - using weather_service_no_db.py for real-time data

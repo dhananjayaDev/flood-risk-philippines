@@ -1,0 +1,23 @@
+{
+  "name": "flood-risk-philippines",
+  "version": "1.0.0",
+  "description": "Flood Risk Management System for Philippines",
+  "main": "api/index.py",
+  "scripts": {
+    "build": "python -m pip install -r requirements.txt",
+    "start": "python api/index.py"
+  },
+  "engines": {
+    "python": "3.9"
+  },
+  "keywords": [
+    "flood",
+    "risk",
+    "management",
+    "philippines",
+    "weather",
+    "monitoring"
+  ],
+  "author": "Your Name",
+  "license": "MIT"
+}

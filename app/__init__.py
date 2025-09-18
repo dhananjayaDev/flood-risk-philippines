@@ -1,128 +1,42 @@
+"""
+Flask App Factory - Database-Free Version
+Real-time Philippine flood monitoring without database dependencies.
+"""
+
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager
 from flask_socketio import SocketIO
 from config import Config
 
-db = SQLAlchemy()
-login_manager = LoginManager()
+# Initialize SocketIO (no database needed)
 socketio = SocketIO()
 
 def create_app():
+    """Create and configure Flask app for real-time data only"""
     import os
     template_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'templates'))
     static_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'static'))
     app = Flask(__name__, template_folder=template_dir, static_folder=static_dir)
     app.config.from_object(Config)
     
-    # Initialize extensions
-    db.init_app(app)
-    login_manager.init_app(app)
-    login_manager.login_view = 'auth.login'
-    login_manager.login_message = 'Please log in to access this page.'
-    login_manager.login_message_category = 'info'
+    # Initialize SocketIO for real-time updates
     socketio.init_app(app, cors_allowed_origins="*")
     
     # Register blueprints
-    from app.auth import bp as auth_bp
-    app.register_blueprint(auth_bp, url_prefix='/auth')
-    
     from app.main import bp as main_bp
     app.register_blueprint(main_bp)
     
-    from app.flood_routes import flood_bp
-    app.register_blueprint(flood_bp)
-    
-    # Create database tables
-    with app.app_context():
-        db.create_all()
-        # SRI LANKAN DATABASE MODELS - COMMENTED OUT FOR PHILIPPINE FOCUS
-        # Create tables for all river databases
-        # try:
-        #     from app.models import (
-        #         RiverHeight, KuruGangaHeight, WeyGangaHeight, 
-        #         DenawakaGangaHeight, KukuleGangaHeight, GalathuraOyaHeight,
-        #         PelmadullaWeather, RatnapuraWeather, KalawanaWeather,
-        #         KuruvitaWeather, AyagamaWeather, KahawattaWeather
-        #     )
-        #     
-        #     # Create tables for each river database
-        #     river_models = [
-        #         (RiverHeight, 'kalugangadb'),
-        #         (KuruGangaHeight, 'kuruganga'),
-        #         (WeyGangaHeight, 'weyganga'),
-        #         (DenawakaGangaHeight, 'denawakaganga'),
-        #         (KukuleGangaHeight, 'kukuleganga'),
-        #         (GalathuraOyaHeight, 'galathuraoya')
-        #     ]
-        #     
-        #     # Create tables for each weather database
-        #     weather_models = [
-        #         (PelmadullaWeather, 'pelmadulla_weather'),
-        #         (RatnapuraWeather, 'ratnapura_weather'),
-        #         (KalawanaWeather, 'kalawana_weather'),
-        #         (KuruvitaWeather, 'kuruvita_weather'),
-        #         (AyagamaWeather, 'ayagama_weather'),
-        #         (KahawattaWeather, 'kahawatta_weather')
-        #     ]
-        #     
-        #     # Create river tables
-        #     for model, bind_key in river_models:
-        #         try:
-        #             model.__table__.create(db.engines[bind_key], checkfirst=True)
-        #             print(f"✅ Created river table for {bind_key}")
-        #         except Exception as e:
-        #             print(f"⚠️ Could not create river table for {bind_key}: {e}")
-        #     
-        #     # Create weather tables
-        #     for model, bind_key in weather_models:
-        #         try:
-        #             model.__table__.create(db.engines[bind_key], checkfirst=True)
-        #             print(f"✅ Created weather table for {bind_key}")
-        #         except Exception as e:
-        #             print(f"⚠️ Could not create weather table for {bind_key}: {e}")
-        #             
-        # except Exception as e:
-        #     print(f"Note: Could not create river/weather tables: {e}")
-        
-        print("✅ Database initialization completed (Philippine focus mode)")
-    
-    # SRI LANKAN DATA COLLECTION - COMMENTED OUT FOR PHILIPPINE FOCUS
-    # Start automatic river data collection
-    # try:
-    #     from app.river_data_collector import start_river_data_collection
-    #     if start_river_data_collection(app):
-    #         print("✅ Automatic river data collection started")
-    #     else:
-    #         print("⚠️ Failed to start automatic river data collection")
-    # except Exception as e:
-    #     print(f"⚠️ River data collector not available: {e}")
-    
-    # Start automatic weather data collection
-    # try:
-    #     from app.weather_data_collector import start_weather_data_collection
-    #     if start_weather_data_collection(app):
-    #         print("✅ Automatic weather data collection started")
-    #     else:
-    #         print("⚠️ Failed to start automatic weather data collection")
-    # except Exception as e:
-    #     print(f"⚠️ Weather data collector not available: {e}")
-    
-    # Create notification database
-    try:
-        with app.app_context():
-            # Debug: Check if bind key exists
-            print(f"Available bind keys: {list(app.config.get('SQLALCHEMY_BINDS', {}).keys())}")
-            
-            from app.models import WeatherNotification
-            # Create only the notification database tables
-            db.create_all(bind='notification_db')
-            print("✅ Notification database initialized")
-    except Exception as e:
-        print(f"⚠️ Failed to initialize notification database: {e}")
-        print(f"Error details: {str(e)}")
-        # Continue without notification database
-    
-    print("✅ Philippine-focused flood risk app initialized (no Sri Lankan data collection)")
+    print("✅ Philippine Flood Monitor initialized (Real-time mode)")
+    print("🌊 No database - Real-time API data only")
+    print("🇵🇭 Philippine rivers and weather monitoring")
     
     return app
+
+def get_app_info():
+    """Get application information"""
+    return {
+        'name': 'Philippine Flood Monitor',
+        'version': '2.0',
+        'description': 'Real-time Philippine river and weather monitoring',
+        'database_enabled': False,
+        'real_time_only': True
+    }

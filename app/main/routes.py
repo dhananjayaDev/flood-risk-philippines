@@ -1,9 +1,8 @@
 from flask import render_template, flash, redirect, url_for, request, jsonify
-from flask_login import login_required, current_user
 from flask_socketio import emit
 from app.main import bp
 from app import socketio
-from app.weather_service import get_current_weather, get_weather_background_video, get_wind, get_astronomy, get_7day_overview
+from app.weather_service_no_db import get_current_weather, get_weather_background_video, get_wind, get_astronomy, get_7day_overview
 from app.river import get_current_river_height, get_river_height_7day
 from app.search import search_location_data, get_available_locations
 import random
@@ -12,11 +11,8 @@ from datetime import datetime, timedelta
 @bp.route('/')
 @bp.route('/index')
 def index():
-    # Redirect to signin page if user is not authenticated
-    if not current_user.is_authenticated:
-        return redirect(url_for('auth.login'))
-    # If authenticated, redirect to dashboard
-    return redirect(url_for('main.home'))
+    # Redirect to public dashboard
+    return redirect(url_for('main.public_dashboard'))
 
 @bp.route('/landing')
 def landing():
@@ -53,7 +49,6 @@ def public_dashboard():
     return render_template('public.html', title='Public Dashboard', weather_data=weather_data, wind_data=wind_data, astronomy_data=astronomy_data, forecast_7day=forecast_7day, river_current=river_current, river_7day=river_7day, background_video=background_video)
 
 @bp.route('/home')
-@login_required
 def home():
     # Get current weather data for current location
     weather_data = get_current_weather()
@@ -205,13 +200,12 @@ def home():
         }
     }
     
-    return render_template('home.html', title='Dashboard', user=current_user, data=dashboard_data, weather_data=weather_data, wind_data=wind_data, astronomy_data=astronomy_data, forecast_7day=forecast_7day, river_current=river_current, river_7day=river_7day, background_video=background_video)
+    return render_template('home.html', title='Dashboard', data=dashboard_data, weather_data=weather_data, wind_data=wind_data, astronomy_data=astronomy_data, forecast_7day=forecast_7day, river_current=river_current, river_7day=river_7day, background_video=background_video)
 
 @bp.route('/settings')
-@login_required
 def settings():
-    """User settings page"""
-    return render_template('settings.html', title='Settings', user=current_user)
+    """Settings page"""
+    return render_template('settings.html', title='Settings')
 
 # SocketIO Event Handlers
 @socketio.on('connect')
@@ -262,15 +256,13 @@ def handle_data_request():
 
 # Search routes
 @bp.route('/search')
-@login_required
 def search():
-    """Search page for authenticated users"""
+    """Search page"""
     return render_template('search.html', title='Search')
 
 @bp.route('/api/search', methods=['POST'])
-@login_required
 def api_search():
-    """API endpoint for search functionality (authenticated users)"""
+    """API endpoint for search functionality"""
     try:
         data = request.get_json()
         search_term = data.get('search_term', '').strip()
@@ -285,7 +277,6 @@ def api_search():
         return jsonify({'success': False, 'error': str(e)}), 500
 
 @bp.route('/api/locations')
-@login_required
 def api_locations():
     """Get available locations for search suggestions"""
     try:
