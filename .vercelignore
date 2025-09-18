@@ -54,3 +54,8 @@ docs/
 # Ignore backup files
 *.bak
 *.backup
+
+# Ignore unused video files
+static/videos/bg_vdo01.mp4
+static/videos/bg_vdo03.mp4
+static/videos/bg_vdo04.mp4

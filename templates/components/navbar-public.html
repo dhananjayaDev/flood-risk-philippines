@@ -72,11 +72,11 @@
             <div class="user-dropdown">
                 <i class="fas fa-chevron-down"></i>
                 <div class="dropdown-menu">
-                    <a href="{{ url_for('auth.login') }}" class="dropdown-item public-dropdown-item">
-                        Login
+                    <a href="{{ url_for('main.landing') }}" class="dropdown-item public-dropdown-item">
+                        About
                     </a>
-                    <a href="{{ url_for('auth.register') }}" class="dropdown-item public-dropdown-item">
-                        Register
+                    <a href="{{ url_for('main.public_dashboard') }}" class="dropdown-item public-dropdown-item">
+                        Dashboard
                     </a>
                 </div>
             </div>
@@ -279,13 +279,13 @@
             </div>
             
             <div class="settings-actions">
-                <a href="{{ url_for('auth.login') }}" class="settings-btn settings-btn-primary">
-                    <i class="fas fa-sign-in-alt"></i>
-                    Login to Save Settings
+                <a href="{{ url_for('main.landing') }}" class="settings-btn settings-btn-primary">
+                    <i class="fas fa-info-circle"></i>
+                    About
                 </a>
-                <a href="{{ url_for('auth.register') }}" class="settings-btn settings-btn-secondary">
-                    <i class="fas fa-user-plus"></i>
-                    Create Account
+                <a href="{{ url_for('main.public_dashboard') }}" class="settings-btn settings-btn-secondary">
+                    <i class="fas fa-tachometer-alt"></i>
+                    Dashboard
                 </a>
             </div>
         </div>
@@ -318,10 +318,10 @@
     <!-- Menu Items -->
     <ul class="mobile-menu-items">
         <li class="mobile-menu-item">
-            <a href="{{ url_for('auth.login') }}" class="mobile-menu-link">Sign In</a>
+            <a href="{{ url_for('main.landing') }}" class="mobile-menu-link">About</a>
         </li>
         <li class="mobile-menu-item">
-            <a href="{{ url_for('auth.register') }}" class="mobile-menu-link">Sign Up</a>
+            <a href="{{ url_for('main.public_dashboard') }}" class="mobile-menu-link">Dashboard</a>
         </li>
         <li class="mobile-menu-item">
             <a href="{{ url_for('main.home') }}" class="mobile-menu-link">Home</a>
