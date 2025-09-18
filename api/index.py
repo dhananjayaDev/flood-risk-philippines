@@ -14,7 +14,13 @@ sys.path.insert(0, str(parent_dir))
 os.environ['FLASK_ENV'] = 'production'
 
 # Import the Flask app
-from app import create_app
+try:
+    from app import create_app
+except ImportError:
+    # Fallback to simple version if main app fails
+    import sys
+    sys.path.append('.')
+    from app.__init_simple__ import create_app
 
 # Create the Flask app
 app = create_app()

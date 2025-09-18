@@ -1,1 +1,0 @@
-# Authentication module removed - Public app only

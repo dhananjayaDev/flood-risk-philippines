@@ -55,7 +55,9 @@ docs/
 *.bak
 *.backup
 
-# Ignore unused video files
-static/videos/bg_vdo01.mp4
-static/videos/bg_vdo03.mp4
-static/videos/bg_vdo04.mp4
+# Ignore development and backup files
+deploy.sh
+build.sh
+*.md
+*.txt
+!requirements.txt

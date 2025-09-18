@@ -1,1 +1,0 @@
-# Weather module - using weather_service_no_db.py for real-time data
