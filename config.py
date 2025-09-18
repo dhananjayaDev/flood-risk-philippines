@@ -6,6 +6,7 @@ load_dotenv()
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'dev-secret-key-change-in-production'
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///app.db'
+    GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY') or 'AIzaSyCNLAkh8xk2TcX63IQQRNXdZ0hGqAUFmnA'  # Replace with your actual API key
     SQLALCHEMY_BINDS = {
         # River databases
         'kalugangadb': os.environ.get('KALUGANGA_DB_URL') or 'sqlite:///kalugangadb.db',
@@ -20,7 +21,9 @@ class Config:
         'kalawana_weather': os.environ.get('KALAWANA_WEATHER_DB_URL') or 'sqlite:///kalawana_weather.db',
         'kuruvita_weather': os.environ.get('KURUVITA_WEATHER_DB_URL') or 'sqlite:///kuruvita_weather.db',
         'ayagama_weather': os.environ.get('AYAGAMA_WEATHER_DB_URL') or 'sqlite:///ayagama_weather.db',
-        'kahawatta_weather': os.environ.get('KAHAWATTA_WEATHER_DB_URL') or 'sqlite:///kahawatta_weather.db'
+        'kahawatta_weather': os.environ.get('KAHAWATTA_WEATHER_DB_URL') or 'sqlite:///kahawatta_weather.db',
+        # Notification database
+        'notification_db': os.environ.get('NOTIFICATION_DB_URL') or 'sqlite:///notification.db'
     }
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     WTF_CSRF_ENABLED = True

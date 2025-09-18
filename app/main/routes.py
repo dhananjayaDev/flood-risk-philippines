@@ -26,19 +26,19 @@ def landing():
 @bp.route('/public')
 def public_dashboard():
     """Public dashboard accessible without authentication"""
-    # Get current weather data for Ratnapura
+    # Get current weather data for current location
     weather_data = get_current_weather()
     
-    # Get wind data for Ratnapura
+    # Get wind data for current location
     wind_data = get_wind()
     
-    # Get astronomy data for Ratnapura (sunrise/sunset)
+    # Get astronomy data for current location (sunrise/sunset)
     astronomy_data = get_astronomy()
     
     # Get 7-day overview data (3 days history + current + 3 days forecast)
     forecast_7day = get_7day_overview()
     
-    # Get river height data for default river (Kalu Ganga (Ratnapura))
+    # Get river height data for current Philippine river
     river_current = get_current_river_height()
     river_7day = get_river_height_7day()
     
@@ -55,19 +55,19 @@ def public_dashboard():
 @bp.route('/home')
 @login_required
 def home():
-    # Get current weather data for Ratnapura
+    # Get current weather data for current location
     weather_data = get_current_weather()
     
-    # Get wind data for Ratnapura
+    # Get wind data for current location
     wind_data = get_wind()
     
-    # Get astronomy data for Ratnapura (sunrise/sunset)
+    # Get astronomy data for current location (sunrise/sunset)
     astronomy_data = get_astronomy()
     
     # Get 7-day overview data (3 days history + current + 3 days forecast)
     forecast_7day = get_7day_overview()
     
-    # Get river height data for default river (Kalu Ganga (Ratnapura))
+    # Get river height data for current Philippine river
     river_current = get_current_river_height()
     river_7day = get_river_height_7day()
     

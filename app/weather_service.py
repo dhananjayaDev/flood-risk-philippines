@@ -75,17 +75,15 @@ def get_current_weather(location_query=None):
         current = data['current']
         location = data['location']
         
-        # Get current river name based on location (check for Philippine rivers first)
-        current_river = "Kalu Ganga (Ratnapura)"  # Default Sri Lankan river
-        is_philippine = False
+        # Get current Philippine river name
+        current_river = "Agno River"  # Default Philippine river
+        is_philippine = True
         
         try:
             from .philippine_river_service import get_current_philippine_river, get_philippine_weather_city
             
-            # Check if current location is a Philippine river
+            # Get current Philippine river
             philippine_river = get_current_philippine_river()
-            # Always use the Philippine river (including default Agno River)
-            is_philippine = True
             current_river = philippine_river
             # Update location to use weather city for API calls
             weather_city = get_philippine_weather_city(philippine_river)
@@ -100,42 +98,133 @@ def get_current_weather(location_query=None):
             else:
                 print(f"Error checking Philippine location: {e}")
         
-        # If not Philippine, use Sri Lankan river system
-        if not is_philippine:
-            try:
-                from .river import get_current_river
-                current_river = get_current_river()
-            except:
-                current_river = "Kalu Ganga (Ratnapura)"
-        
-        # Get flood risk prediction for description
+        # Get river height prediction using Gemini AI
         try:
-            from .flood_risk_predictor import predict_flood_risk, format_prediction_for_display
-            prediction = predict_flood_risk(hours_back=24)
-            if prediction and prediction.get('risk_level') != 'UNKNOWN':
-                formatted_prediction = format_prediction_for_display(prediction)
-                # Create concise 2-line description for weather UI
-                risk_level = formatted_prediction['risk_level']
-                confidence = formatted_prediction['confidence']
-                primary_factors = prediction.get('primary_factors', [])
+            from .river_prediction_service import predict_river_height_trend
+            
+            # Get current river data for prediction
+            river_data = {
+                'river_name': current_river,
+                'dam_name': 'Unknown',  # Will be updated by river service
+                'current_height': 0.0,  # Will be updated by river service
+                'observation_time': 'Unknown',
+                'observation_date': 'Unknown'
+            }
+            
+            # Try to get actual river data
+            try:
+                from .river import get_current_river_height
+                actual_river_data = get_current_river_height()
+                if actual_river_data:
+                    river_data.update(actual_river_data)
+            except:
+                pass  # Use default values if river data unavailable
+            
+            # Create weather data for prediction
+            weather_data_for_prediction = {
+                'location': location['name'],
+                'temperature_c': current['temp_c'],
+                'condition': current['condition']['text'],
+                'humidity': current.get('humidity', 0),
+                'precip_mm': current.get('precip_mm', 0),
+                'pressure_mb': current.get('pressure_mb', 0),
+                'wind_kph': current.get('wind_kph', 0),
+                'wind_dir': current.get('wind_dir', 'Unknown'),
+                'uv': current.get('uv', 0),
+                'visibility_km': current.get('vis_km', 0)
+            }
+            
+            # Get river height prediction
+            prediction = predict_river_height_trend(weather_data_for_prediction, river_data)
+            
+            if prediction and prediction.get('trend') != 'UNKNOWN':
+                # Create 2-line description for UI
+                trend = prediction.get('trend', 'SAME')
+                confidence = prediction.get('confidence', 0)
+                magnitude = prediction.get('magnitude', 'LOW')
                 
-                # First line: Risk level and confidence
-                line1 = f"Flood Risk: {risk_level} (Confidence: {confidence}%)"
+                # First line: River height prediction
+                line1 = f"River Height: {trend} ({magnitude} confidence: {confidence}%)"
                 
-                # Second line: Top 2 primary factors or key insight
-                if primary_factors:
-                    if len(primary_factors) >= 2:
-                        line2 = f"{primary_factors[0]}. {primary_factors[1]}."
-                    else:
-                        line2 = f"{primary_factors[0]}."
+                # Second line: Key reasoning
+                reasoning = prediction.get('reasoning', [])
+                if reasoning:
+                    line2 = reasoning[0] if len(reasoning) > 0 else f"Current conditions: {current['condition']['text']}"
                 else:
-                    line2 = formatted_prediction['risk_description']
+                    line2 = f"Current conditions: {current['condition']['text']}"
                 
                 prediction_description = f"{line1}\n{line2}"
+                
+                # Store full detailed description in notification database
+                try:
+                    from .notification_service import store_weather_notification
+                    
+                    # Create full description with all details
+                    full_description = f"""River Height Prediction Analysis:
+
+TREND: {trend} ({magnitude} confidence: {confidence}%)
+TIMEFRAME: {prediction.get('timeframe', '6-12 hours')}
+RISK ASSESSMENT: {prediction.get('risk_assessment', 'UNKNOWN')}
+
+DETAILED DESCRIPTION:
+{prediction.get('description', 'No detailed description available')}
+
+REASONING:
+{chr(10).join(f"• {reason}" for reason in reasoning) if reasoning else "• No specific reasoning provided"}
+
+RECOMMENDATIONS:
+{chr(10).join(f"• {rec}" for rec in prediction.get('recommendations', [])) if prediction.get('recommendations') else "• Monitor conditions regularly"}
+
+WEATHER CONDITIONS:
+• Location: {location['name']}
+• Temperature: {current['temp_c']}°C
+• Condition: {current['condition']['text']}
+• Humidity: {current.get('humidity', 0)}%
+• Precipitation: {current.get('precip_mm', 0)}mm
+• Pressure: {current.get('pressure_mb', 0)}mb
+• Wind: {current.get('wind_kph', 0)}km/h {current.get('wind_dir', 'Unknown')}
+
+RIVER DATA:
+• River: {current_river}
+• Dam: {river_data.get('dam_name', 'Unknown')}
+• Current Height: {river_data.get('current_height', 0)}m
+• Observation: {river_data.get('observation_time', 'Unknown')} {river_data.get('observation_date', 'Unknown')}
+
+PREDICTION TIMESTAMP: {prediction.get('prediction_timestamp', 'Unknown')}"""
+                    
+                    # Store in notification database
+                    store_weather_notification(
+                        location=location['name'],
+                        river_name=current_river,
+                        short_description=prediction_description,
+                        full_description=full_description,
+                        prediction_data=prediction,
+                        weather_data=weather_data_for_prediction,
+                        river_data=river_data
+                    )
+                    
+                except Exception as e:
+                    if FLASK_AVAILABLE:
+                        try:
+                            current_app.logger.warning(f"Error storing notification: {e}")
+                        except:
+                            print(f"Error storing notification: {e}")
+                    else:
+                        print(f"Error storing notification: {e}")
             else:
-                prediction_description = 'Flood risk assessment unavailable.\nHeavy rain, strong winds, and occasional lightning expected.'
+                prediction_description = f"Weather conditions for {location['name']}.\nCurrent conditions: {current['condition']['text']}."
+                
         except Exception as e:
-            prediction_description = f'Flood risk assessment error: {str(e)}.\nHeavy rain, strong winds, and occasional lightning expected.'
+            if FLASK_AVAILABLE:
+                try:
+                    current_app.logger.warning(f"Error in river prediction: {e}")
+                except:
+                    print(f"Error in river prediction: {e}")
+            else:
+                print(f"Error in river prediction: {e}")
+            
+            # Fallback to simple description
+            prediction_description = f"Weather conditions for {location['name']}.\nCurrent conditions: {current['condition']['text']}."
         
         result = {
             'temperature_c': current['temp_c'],
@@ -176,7 +265,7 @@ def get_weather_for_location(location_query):
         
         result = {
             'location': location['name'],
-            'timestamp': datetime.now(pytz.timezone('Asia/Colombo')),
+            'timestamp': datetime.now(pytz.timezone('Asia/Manila')),
             'temperature_c': current.get('temp_c', 0.0),
             'humidity': current.get('humidity', 0.0),
             'precip_mm': current.get('precip_mm', 0.0),
@@ -207,7 +296,7 @@ def get_weather_for_location(location_query):
 
 def get_wind():
     """
-    Function to fetch wind status for Ratnapura.
+    Function to fetch wind status for current location.
     Returns a dictionary with wind speed.
     """
     try:
@@ -230,7 +319,7 @@ def get_wind():
 
 def get_astronomy():
     """
-    Function to fetch sunrise and sunset times for Ratnapura.
+    Function to fetch sunrise and sunset times for current location.
     Returns a dictionary with sunrise and sunset times.
     """
     try:
@@ -456,7 +545,7 @@ def get_weather_icon(weather_condition):
 
 def get_7day_overview():
     """
-    Function to fetch and return 7-day overview data for Ratnapura.
+    Function to fetch and return 7-day overview data for current location.
     Includes 3 days of historical data, current day's data, and 3 days of forecast.
     Returns a list of dictionaries with date, max temp, min temp, and condition.
     """

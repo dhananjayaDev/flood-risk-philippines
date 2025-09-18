@@ -108,6 +108,21 @@ def create_app():
     # except Exception as e:
     #     print(f"⚠️ Weather data collector not available: {e}")
     
+    # Create notification database
+    try:
+        with app.app_context():
+            # Debug: Check if bind key exists
+            print(f"Available bind keys: {list(app.config.get('SQLALCHEMY_BINDS', {}).keys())}")
+            
+            from app.models import WeatherNotification
+            # Create only the notification database tables
+            db.create_all(bind='notification_db')
+            print("✅ Notification database initialized")
+    except Exception as e:
+        print(f"⚠️ Failed to initialize notification database: {e}")
+        print(f"Error details: {str(e)}")
+        # Continue without notification database
+    
     print("✅ Philippine-focused flood risk app initialized (no Sri Lankan data collection)")
     
     return app

@@ -19,6 +19,42 @@ class User(UserMixin, db.Model):
     def __repr__(self):
         return f'<User {self.username}>'
 
+# Notification model for storing detailed weather descriptions
+class WeatherNotification(db.Model):
+    """
+    Model for storing detailed weather descriptions and predictions for notifications.
+    Database: notification_db
+    """
+    __tablename__ = 'weather_notifications'
+    __bind_key__ = 'notification_db'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    location = db.Column(db.String(100), nullable=False, index=True)
+    river_name = db.Column(db.String(100), nullable=False, index=True)
+    short_description = db.Column(db.String(500), nullable=False)  # 2-line description for UI
+    full_description = db.Column(db.Text, nullable=False)  # Full detailed description
+    prediction_data = db.Column(db.Text)  # JSON string of full prediction data
+    weather_data = db.Column(db.Text)  # JSON string of weather data used
+    river_data = db.Column(db.Text)  # JSON string of river data used
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(pytz.timezone('Asia/Manila')))
+    
+    def __repr__(self):
+        return f'<WeatherNotification {self.location} {self.created_at}: {self.short_description[:50]}...>'
+    
+    def to_dict(self):
+        """Convert model to dictionary for JSON serialization"""
+        return {
+            'id': self.id,
+            'location': self.location,
+            'river_name': self.river_name,
+            'short_description': self.short_description,
+            'full_description': self.full_description,
+            'prediction_data': self.prediction_data,
+            'weather_data': self.weather_data,
+            'river_data': self.river_data,
+            'created_at': self.created_at.strftime('%Y-%m-%d %H:%M:%S')
+        }
+
 # Base RiverHeight model for Kalu Ganga (existing)
 class RiverHeight(db.Model):
     """
