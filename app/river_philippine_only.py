@@ -34,8 +34,8 @@ def get_current_river():
         try:
             from .philippine_river_service import get_current_philippine_river
             philippine_river = get_current_philippine_river()
-            # Always return the Philippine river (including default Agno River)
-            return philippine_river
+            if philippine_river != 'Agno River':  # Default, means we found a match
+                return philippine_river
         except Exception as e:
             if FLASK_AVAILABLE:
                 try:
@@ -75,10 +75,12 @@ def get_current_river_height(river_name=None):
         try:
             from .philippine_river_service import get_philippine_river_height, get_current_philippine_river
             
-            # Always try to get Philippine data
-            philippine_data = get_philippine_river_height(river_name)
-            if philippine_data:
-                return philippine_data
+            # Check if current river is a Philippine river
+            philippine_river = get_current_philippine_river()
+            if philippine_river != 'Agno River':  # Default, means we found a match
+                philippine_data = get_philippine_river_height(philippine_river)
+                if philippine_data:
+                    return philippine_data
         except Exception as e:
             if FLASK_AVAILABLE:
                 try:
@@ -118,12 +120,14 @@ def get_river_height_7day(river_name=None):
         
         # Use Philippine river service
         try:
-            from .philippine_river_service import get_philippine_river_7day
+            from .philippine_river_service import get_philippine_river_7day, get_current_philippine_river
             
-            # Always try to get Philippine data
-            philippine_data = get_philippine_river_7day(river_name)
-            if philippine_data:
-                return philippine_data
+            # Check if current river is a Philippine river
+            philippine_river = get_current_philippine_river()
+            if philippine_river != 'Agno River':  # Default, means we found a match
+                philippine_data = get_philippine_river_7day(philippine_river)
+                if philippine_data:
+                    return philippine_data
         except Exception as e:
             if FLASK_AVAILABLE:
                 try:

@@ -30,10 +30,10 @@ def load_location_from_file():
         if os.path.exists(LOCATION_FILE):
             with open(LOCATION_FILE, 'r', encoding='utf-8-sig') as f:
                 return f.read().strip()
-        return 'Ratnapura'  # Default location
+        return 'Agno River'  # Default Philippine location
     except Exception as e:
         print(f"Error loading location from file: {e}")
-        return 'Ratnapura'
+        return 'Agno River'
 
 def update_weather_location(search_term):
     """
@@ -83,7 +83,7 @@ def update_weather_location(search_term):
 
 def search_location_data(search_term):
     """
-    Simple search function that updates weather location.
+    Enhanced search function that handles both Sri Lankan and Philippine locations.
     
     Args:
         search_term (str): User's search input
@@ -91,21 +91,91 @@ def search_location_data(search_term):
     Returns:
         dict: Search result
     """
-    return update_weather_location(search_term)
+    try:
+        # Check if this is a Philippine location
+        from .philippine_river_service import PHILIPPINE_RIVERS, get_philippine_river_by_name, get_philippine_dam_by_name
+        
+        search_lower = search_term.lower()
+        
+        # Check if search term matches any Philippine river
+        for river_name, river_config in PHILIPPINE_RIVERS.items():
+            if (search_lower in river_name.lower() or 
+                river_name.lower() in search_lower or
+                search_lower in river_config['weather_city'].lower() or
+                river_config['weather_city'].lower() in search_lower):
+                
+                # Test if we can get data for this river
+                river_data = get_philippine_river_by_name(river_name)
+                if river_data:
+                    # Save the location to file for persistence
+                    save_location_to_file(search_term)
+                    return {
+                        'success': True,
+                        'location': search_term,
+                        'river_name': river_name,
+                        'weather_city': river_config['weather_city'],
+                        'coordinates': river_config['coordinates'],
+                        'is_philippine': True,
+                        'message': f'Switched to {river_name} (Philippines)'
+                    }
+        
+        # Check if search term matches any Philippine dam
+        for river_name, river_config in PHILIPPINE_RIVERS.items():
+            for dam_name in river_config['dams']:
+                if (search_lower in dam_name.lower() or 
+                    dam_name.lower() in search_lower):
+                    
+                    # Test if we can get data for this dam
+                    dam_data = get_philippine_dam_by_name(dam_name)
+                    if dam_data:
+                        # Save the location to file for persistence
+                        save_location_to_file(search_term)
+                        return {
+                            'success': True,
+                            'location': search_term,
+                            'river_name': river_name,
+                            'dam_name': dam_name,
+                            'weather_city': river_config['weather_city'],
+                            'coordinates': river_config['coordinates'],
+                            'is_philippine': True,
+                            'message': f'Switched to {dam_name} in {river_name} (Philippines)'
+                        }
+        
+        # If not a Philippine location, use the original Sri Lankan search
+        return update_weather_location(search_term)
+        
+    except Exception as e:
+        if FLASK_AVAILABLE:
+            try:
+                current_app.logger.error(f"Error in enhanced search: {str(e)}")
+            except:
+                print(f"Error in enhanced search: {str(e)}")
+        else:
+            print(f"Error in enhanced search: {str(e)}")
+        
+        # Fallback to original search
+        return update_weather_location(search_term)
 
 def get_available_locations():
     """
     Get list of available locations for search suggestions.
+    Now focuses on Philippine locations only.
     
     Returns:
         list: List of available location names
     """
     return [
-        'Ratnapura', 'Colombo', 'Kandy', 'Galle', 'Jaffna',
-        'Kalu Ganga (Ratnapura)', 'Kuru Ganga (Kuruvita)', 
-        'Galathura Oya (Ayagama)', 'Denawaka Ganga (Pelmadulla)',
-        'Kukule Ganga (Kalawana)', 'Wey Ganga (Kahawaththa)',
-        'Niriella Ganga (Elapatha)'
+        # Philippine locations (primary focus)
+        'Agno River', 'Cagayan River', 'Pampanga River',
+        'Ambuklao Dam', 'Binga Dam', 'San Roque Dam', 'Magat Dam',
+        'Baguio', 'Tuguegarao', 'Manila', 'Luzon',
+        
+        # SRI LANKAN LOCATIONS - COMMENTED OUT FOR PHILIPPINE FOCUS
+        # 'Ratnapura', 'Colombo', 'Kandy', 'Galle', 'Jaffna',
+        # 'Kalu Ganga (Ratnapura)', 'Kuru Ganga (Kuruvita)', 
+        # 'Galathura Oya (Ayagama)', 'Denawaka Ganga (Pelmadulla)',
+        # 'Kukule Ganga (Kalawana)', 'Wey Ganga (Kahawaththa)',
+        # 'Niriella Ganga (Elapatha)',
     ]
 
 if __name__ == "__main__":

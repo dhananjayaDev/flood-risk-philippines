@@ -18,7 +18,7 @@ def _load_saved_location():
         from .search import load_location_from_file
         return load_location_from_file()
     except:
-        return 'Ratnapura'
+        return 'Agno River'  # Default Philippine location
 
 _current_location = _load_saved_location()
 
@@ -46,7 +46,7 @@ def set_location(location):
         print(f"Weather location updated to: {location}")
 
 # For backward compatibility
-LOCATION = 'Ratnapura'  # This is now just a default, not used in API calls
+LOCATION = 'Agno River'  # This is now just a default, not used in API calls
 
 def fetch_api(endpoint, params):
     """
@@ -75,12 +75,38 @@ def get_current_weather(location_query=None):
         current = data['current']
         location = data['location']
         
-        # Get current river name based on location
+        # Get current river name based on location (check for Philippine rivers first)
+        current_river = "Kalu Ganga (Ratnapura)"  # Default Sri Lankan river
+        is_philippine = False
+        
         try:
-            from .river import get_current_river
-            current_river = get_current_river()
-        except:
-            current_river = "Kalu Ganga (Ratnapura)"
+            from .philippine_river_service import get_current_philippine_river, get_philippine_weather_city
+            
+            # Check if current location is a Philippine river
+            philippine_river = get_current_philippine_river()
+            # Always use the Philippine river (including default Agno River)
+            is_philippine = True
+            current_river = philippine_river
+            # Update location to use weather city for API calls
+            weather_city = get_philippine_weather_city(philippine_river)
+            if not location_query:  # Only update if no specific location was requested
+                params['q'] = weather_city
+        except Exception as e:
+            if FLASK_AVAILABLE:
+                try:
+                    current_app.logger.warning(f"Error checking Philippine location: {e}")
+                except:
+                    print(f"Error checking Philippine location: {e}")
+            else:
+                print(f"Error checking Philippine location: {e}")
+        
+        # If not Philippine, use Sri Lankan river system
+        if not is_philippine:
+            try:
+                from .river import get_current_river
+                current_river = get_current_river()
+            except:
+                current_river = "Kalu Ganga (Ratnapura)"
         
         # Get flood risk prediction for description
         try:
@@ -117,7 +143,8 @@ def get_current_weather(location_query=None):
             'description': prediction_description,
             'river_name': current_river,
             'uv': current['uv'],
-            'location': location['name']
+            'location': location['name'],
+            'is_philippine': is_philippine
         }
         if FLASK_AVAILABLE:
             current_app.logger.info(f"Current Weather: {json.dumps(result, indent=2)}")
