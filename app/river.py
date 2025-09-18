@@ -5,8 +5,6 @@ Sri Lankan code has been moved to river_sri_lankan_backup.py for reference.
 """
 
 import requests
-import pandas as pd
-import time
 from datetime import datetime, timedelta
 import pytz
 try:

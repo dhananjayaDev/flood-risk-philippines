@@ -1,4 +1,4 @@
-from flask import render_template, flash, redirect, url_for, request, jsonify
+from flask import render_template, redirect, url_for, request, jsonify
 from flask_socketio import emit
 from app.main import bp
 from app import socketio
